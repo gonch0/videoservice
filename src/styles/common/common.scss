@@ -1,27 +1,104 @@
 @import "../theme";
 @import "../mixins";
 
-@import "fonts";
+
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+    font-family: sans-serif;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/*end reset*/
+
+h3 {
+    font-size: 22px;
+    margin: 10px 0 0;
+}
+.app {
+    margin: 50px;
+    font: 14px sans-serif;
+}
+.ib {
+    display: inline-block;
+}
+.page {
+    width: 80%;
+}
+.user {
+    width: 20%;
+    vertical-align: top;
+}
+
+.btn {
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    font-size: 16px;
+    outline: 0;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+    color: #fff;
+    background-color: #6383a8;
+    text-align: center;
+    letter-spacing: .5px;
+    transition: .2s ease-out;
+    cursor: pointer;
+}
+.btn:hover {
+    background-color: #6d8cb0
+}
 
 html,
 body {
-    margin: 0;
-    padding: 0;
-
-    @include media($tablet-breakpoint, down) {
-        @supports (-webkit-overflow-scrolling: touch) {
-            /* CSS specific to iOS devices */
-            -webkit-overflow-scrolling: auto;
-            /* При включении перестанет работать ScrollToTop при переходах между страницами */
-            overflow: auto;
-        }
-    }
-}
-
-html {
-    width: 100%;
-    height: 100%;
-    -webkit-tap-highlight-color: transparent; //Safari iOS
+  margin: 0;
+  padding: 0;
 }
 
 h1,
@@ -33,127 +110,55 @@ h6,
 a,
 button,
 p {
-    @include unstyled();
-    font-size: inherit;
+  @include unstyled();
+  font-size: inherit;
 }
 
 body {
-    @include font();
-    width: 100%;
-    min-height: 100%;
-    min-width: 320px;
-    color: $gray1;
-    font-size: 16px;
-    line-height: 1.2;
+  @include font();
+  width: 100%;
+  min-height: 100%;
+  min-width: 320px;
+  color: $gray1;
+  font-size: 16px;
+  line-height: 1.2;
 }
 
-*, *::before, *::after {
-    box-sizing: border-box;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 input,
 textarea,
 select,
 button {
-    font-family: inherit;
+  font-family: inherit;
 }
 
 #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.container {
-    @include container();
+.main {
+  a {
+    text-decoration: none;
+  }
 }
 
-.title-h2 {
-    @include font(Medium);
-    font-size: 24px;
+body {
+  display: flex;
+  flex-direction: column;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
-.title-h3 {
-    @include font(Medium);
-    font-size: 20px;
+.header {
+  border: 2px solid goldenrod;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
 }
-
-.title-h4 {
-    @include font(Medium);
-    font-size: 16px;
-}
-
-.text-p1 {
-    @include font();
-    font-size: 16px;
-}
-
-.text-p2 {
-    @include font();
-    font-size: 20px;
-}
-
-.page {
-    padding-bottom: 72px;
-}
-
-.hide {
-    display: none;
-}
-
-$gradients: (
-        'orange': (#F2C94C, #F29A4A),
-        'red': (#F2994A, #EB5757),
-        'blue': (#56CCF2, #2F80ED),
-        'gray': (#828282, #333333)
-);
-
-.gradient {
-    @each $name, $colors in $gradients {
-        &--#{$name} {
-            @include gradient(nth($colors, 1), nth($colors, 2));
-        }
-    }
-}
-
-.delete,
-.back-link {
-    top: 0;
-    position: absolute;
-    cursor: pointer;
-    transition: opacity .3s;
-    background: {
-        repeat: no-repeat;
-        position: center;
-    }
-
-    &:hover, &:focus {
-        opacity: .5;
-    }
-}
-
-.back-link {
-    left: 0;
-    width: 14px;
-    height: 24px;
-    background: {
-        image: url("/src/images/back-link.svg");
-        size: 14px 24px;
-    }
-}
-
-.delete {
-    left: calc(100% + 15px);
-    width: 15px;
-    height: 15px;
-    background: {
-        image: url("/src/images/delete.svg");
-        size: 15px 15px;
-    }
-}
-
-@import "btn";
-@import "spinner";
-@import "checkbox";
-@import "input";
-@import "baron";
