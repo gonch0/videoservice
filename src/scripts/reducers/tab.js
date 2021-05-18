@@ -7,7 +7,7 @@ const initialState = {
 
 export function tabReducer(state = initialState, action) {
   switch (action.type) {
-    case "SET_TAB":
+    case SET_TAB:
       return { ...state, currentTab: action.payload};
 
     default:

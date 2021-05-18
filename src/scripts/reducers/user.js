@@ -1,7 +1,17 @@
-const initialState = {
-    name: 'Аноним',
-}
+import { SET_USER } from '../actions/userActions'
 
-export function userReducer(state = initialState) {
-    return state
+
+const initialState = {
+  name: "",
+  pass: "",
+};
+
+export function userReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_USER:
+      return { ...state, user: action.payload };
+
+    default:
+      return state;
+  }
 }
