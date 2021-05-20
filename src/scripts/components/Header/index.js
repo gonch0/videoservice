@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 import Auth from "../Auth";
 
 export default function Header() {
-
   const onFormSubmit = (e) => {
     e.preventDefault();
   };
 
   return (
     <header className="header">
-      <h1>Видеосервис</h1>
+      <Link to="/">
+        <h1>Видеосервис</h1>
+      </Link>
 
       <form onSubmit={onFormSubmit}>
         <input type="text" placeholder={`text`} />
@@ -21,7 +22,6 @@ export default function Header() {
       </form>
 
       <Auth />
-
     </header>
   );
 }

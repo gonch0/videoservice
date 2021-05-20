@@ -1,17 +1,16 @@
 import React from "react";
 
 import Header from "../Header";
-import MainPage from "../../pages/Main";
+import Footer from "../Footer";
 
-
-export default function Layout() {
+export default function Layout({ component }) {
   return (
     <>
       <Header />
 
-      <MainPage />
+      {component}
 
-
+      <Footer />
     </>
   );
 }

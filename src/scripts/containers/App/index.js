@@ -3,25 +3,28 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "../../components/Layout";
 
-import { Page } from "../../components/Page";
+import Main from "../../pages/Main";
+import Movie from "../../pages/Movie";
 import { getPhotos } from "../../actions/pageActions";
+
+import { Redirect, Route, Switch } from "react-router-dom";
 
 class App extends Component {
   render() {
-    const { page, getPhotosAction } = this.props;
-
     return (
-      <>
-        <Layout />
-
-        <Page photos={page.photos} year={page.year} getPhotos={getPhotosAction} isFetching={page.isFetching} />
-      </>
+      <Layout
+        component={
+          <Switch>
+            <Route path="/" exact component={Main} />
+            <Route path="/movie" component={Movie} />
+          </Switch>
+        }
+      />
     );
   }
 }
 
 const mapStateToProps = (store) => {
-  console.log(store);
   return {
     user: store.user,
     page: store.page,

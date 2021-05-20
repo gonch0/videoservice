@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 import { setLogin } from "../../actions/loginActions";
+import { setUser } from "../../actions/userActions";
 import { connect } from "react-redux";
 
 import Modal from "react-modal";
 Modal.setAppElement("#root");
 
-const Auth = ({ setLogin }) => {
+const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
   const [isAuthOpen, toggleAuth] = useState(false);
+  const [loginForm, setLoginForm] = useState({});
 
   const openAuthModal = () => {
     toggleAuth(true);
@@ -17,21 +19,50 @@ const Auth = ({ setLogin }) => {
     toggleAuth(false);
   };
 
-  const logIn = (e) => {
-    e.preventDefault();
+  const logIn = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    setLogin(true);
+      setLogin(true);
 
-    closeAuthModal();
-  };
+      setUser(loginForm);
 
-  // const [state, dispatch] = useReducer(reducer, initialCount, init);
+      closeAuthModal();
+    },
+    [loginForm, setUser]
+  );
+
+  const handleInputChange = useCallback((e) => {
+    const field = e.target.name;
+
+    setLoginForm({ ...loginForm, [field]: e.target.value });
+  });
+
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     setLoggedIn(true);
+  //     setNewLogin(user.login);
+  //   }
+  // }, [isLoggedIn]);
 
   return (
     <>
-      <button className="btn" onClick={openAuthModal} type="button">
-        Войти
-      </button>
+      {isLoggedIn ? (
+        <>
+
+          <div className="flex aic">
+              <p className="mr-15">{user.name}</p>
+              <button className="btn" onClick={openAuthModal} type="button">
+                  Выйти
+              </button>
+          </div>
+
+        </>
+      ) : (
+        <button className="btn" onClick={openAuthModal} type="button">
+          Войти
+        </button>
+      )}
 
       <Modal
         isOpen={isAuthOpen}
@@ -43,8 +74,16 @@ const Auth = ({ setLogin }) => {
             type="text"
             className="form-input"
             placeholder="Пользователь"
+            onChange={handleInputChange}
+            name="name"
           />
-          <input type="password" className="form-input" placeholder="Пароль" />
+          <input
+            type="password"
+            name="pass"
+            className="form-input"
+            placeholder="Пароль"
+            onChange={handleInputChange}
+          />
 
           <button className="btn" title="submit">
             Логин
@@ -55,17 +94,18 @@ const Auth = ({ setLogin }) => {
   );
 };
 
-
 const mapStateToProps = (store) => {
-    return {
-        isLoggedIn: store.isLoggedIn,
-    }
-}
+  return {
+    isLoggedIn: store.login.isLoggedIn,
+    user: store.user,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        setLogin: (isLoggedIn) => dispatch(setLogin(isLoggedIn))
-    }
-}
+  return {
+    setLogin: (isLoggedIn) => dispatch(setLogin(isLoggedIn)),
+    setUser: (...loginForm) => dispatch(setUser(...loginForm)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
