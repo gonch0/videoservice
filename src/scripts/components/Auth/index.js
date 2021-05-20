@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import Modal from "react-modal";
 Modal.setAppElement("#root");
 
+import { USER_NAME } from "../../containers/App";
+
 const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
   const [isAuthOpen, toggleAuth] = useState(false);
   const [loginForm, setLoginForm] = useState({});
@@ -26,11 +28,18 @@ const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
       setLogin(true);
 
       setUser(loginForm);
+      localStorage.setItem(USER_NAME, loginForm.name);
 
       closeAuthModal();
     },
     [loginForm, setUser]
   );
+
+  const logOut = useCallback(() => {
+    setLogin(false);
+    setUser({});
+    localStorage.removeItem(USER_NAME);
+  }, [setUser]);
 
   const handleInputChange = useCallback((e) => {
     const field = e.target.name;
@@ -49,14 +58,12 @@ const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
     <>
       {isLoggedIn ? (
         <>
-
           <div className="flex aic">
-              <p className="mr-15">{user.name}</p>
-              <button className="btn" onClick={openAuthModal} type="button">
-                  Выйти
-              </button>
+            <p className="mr-15">{user.name}</p>
+            <button className="btn" onClick={logOut} type="button">
+              Выйти
+            </button>
           </div>
-
         </>
       ) : (
         <button className="btn" onClick={openAuthModal} type="button">
@@ -104,7 +111,7 @@ const mapStateToProps = (store) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setLogin: (isLoggedIn) => dispatch(setLogin(isLoggedIn)),
-    setUser: (...loginForm) => dispatch(setUser(...loginForm)),
+    setUser: (loginForm) => dispatch(setUser(loginForm)),
   };
 };
 
