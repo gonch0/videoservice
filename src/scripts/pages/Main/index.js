@@ -1,63 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { setTab } from "../../actions/tabActions";
 import { connect } from "react-redux";
+import Tabs from "components/Tabs";
+import useFetch from "use-http";
+import { Link } from "react-router-dom";
 
-const Main = ({ currentTab, setTabAction }) => {
-  const onFilmsTabClick = () => {
-    setTabAction("films");
-  };
-
-  const onChannelsTabClick = () => {
-    setTabAction("channels");
-  };
-
-  const renderFilms = () => {
-    return (
-      <div className="content films">
-        <div className="news">
-          <h2>Новинки</h2>
-
-          <ul>
-            <li>Мульт в кино. Выпуск №103. Некогда грустить!</li>
-            <li>Новый Бэтмен</li>
-            <li>Однажды... в Голливуде</li>
-            <li>Стриптизёрши</li>
-          </ul>
-        </div>
-
-        <div className="genres">
-          <h2>Жанры</h2>
-
-          <ul>
-            <li>Мульт в кино. Выпуск №103. Некогда грустить!</li>
-            <li>Новый Бэтмен</li>
-            <li>Однажды... в Голливуде</li>
-            <li>Стриптизёрши</li>
-          </ul>
-        </div>
-      </div>
-    );
-  };
-
+const Main = () => {
   const renderChannels = () => {
     return <div className="content films">channels</div>;
   };
 
+  const options = {};
+  const { loading, error, data = [] } = useFetch("/films.json", options, []);
+
+  const renderFilms = () => {
+    return (
+      <ul>
+        {data.map((film) => (
+          <li key={film.id}>
+            <Link to={`/movie/${film.id}`}>{film.title}</Link>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <main className="main">
-      <h1>{currentTab}</h1>
-
-      <div className="tabs">
-        <button onClick={onFilmsTabClick} type={"button"} className="btn">
-          Фильмы
-        </button>
-        <button onClick={onChannelsTabClick} type={"button"} className="btn">
-          Телеканалы
-        </button>
-      </div>
-
-      {currentTab === "films" && renderFilms()}
-      {currentTab === "channels" && renderChannels()}
+      <Tabs />
+      {error && "Error!"}
+      {loading && "Loading..."}
+      {renderFilms()}
     </main>
   );
 };

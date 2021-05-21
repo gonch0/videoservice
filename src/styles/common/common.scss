@@ -245,4 +245,28 @@ body {
   justify-content: space-between;
 }
 
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  gap: 20px;
+
+  &__tab {
+    font-size: 18px;
+    line-height: 22px;
+
+    &.active {
+      border-bottom: 2px solid;
+    }
+  }
+}
+
+
+.footer {
+  color: white;
+  padding: 16px;
+  background-color: #6383a8;
+}
+
 @import "utils";

@@ -20,7 +20,8 @@
         "react-router-dom": "^5.2.0",
         "react-slick": "^0.26.1",
         "redux": "^4.1.0",
-        "redux-thunk": "^2.3.0"
+        "redux-thunk": "^2.3.0",
+        "use-http": "^1.0.20"
     },
     "devDependencies": {
         "@babel/core": "^7.10.1",

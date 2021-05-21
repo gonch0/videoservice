@@ -5,6 +5,8 @@ import Layout from "../../components/Layout";
 
 import Main from "../../pages/Main";
 import Movie from "../../pages/Movie";
+import Channels from "../../pages/Channels";
+
 import { getPhotos } from "../../actions/pageActions";
 import { setLogin } from "../../actions/loginActions";
 import { setUser } from "../../actions/userActions";
@@ -35,7 +37,9 @@ class App extends Component {
         component={
           <Switch>
             <Route path="/" exact component={Main} />
-            <Route path="/movie" component={Movie} />
+              <Route path="/channels" component={Channels} />
+            <Route path="/movie/:id" component={Movie} />
+
           </Switch>
         }
       />
