@@ -1,26 +1,33 @@
-import React, { useState } from "react";
-import { setTab } from "../../actions/tabActions";
+import React, { useState, useEffect } from "react";
+import { setFilms } from "../../actions/filmsActions";
 import { connect } from "react-redux";
 import Tabs from "components/Tabs";
 import useFetch from "use-http";
 import { Link } from "react-router-dom";
 
-const Main = () => {
-  const renderChannels = () => {
-    return <div className="content films">channels</div>;
-  };
+const Main = ({ setFilms, films }) => {
+  const { get, loading, error } = useFetch("/films.json", []);
 
-  const options = {};
-  const { loading, error, data = [] } = useFetch("/films.json", options, []);
+  async function loadFilms() {
+    if (!error) {
+      const data = await get();
+      setFilms(data);
+    }
+  }
+
+  useEffect(() => {
+    loadFilms();
+  }, []);
 
   const renderFilms = () => {
     return (
-      <ul>
-        {data.map((film) => (
-          <li key={film.id}>
-            <Link to={`/movie/${film.id}`}>{film.title}</Link>
-          </li>
-        ))}
+      <ul className="grid-row-24">
+        {films &&
+          films.map((film) => (
+            <li key={film.id}>
+              <Link to={`/movie/${film.id}`}>{film.title}</Link>
+            </li>
+          ))}
       </ul>
     );
   };
@@ -30,20 +37,20 @@ const Main = () => {
       <Tabs />
       {error && "Error!"}
       {loading && "Loading..."}
-      {renderFilms()}
+      {!error && renderFilms()}
     </main>
   );
 };
 
 const mapStateToProps = (store) => {
   return {
-    currentTab: store.tabs.currentTab,
+    films: store.films.items,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setTabAction: (tabName) => dispatch(setTab(tabName)),
+    setFilms: (film) => dispatch(setFilms(film)),
   };
 };
 

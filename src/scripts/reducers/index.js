@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux'
 import { pageReducer } from './page'
 import { userReducer } from './user'
-import { tabReducer } from './tab'
+import { filmsReducer, channelsReducer } from './films'
 import { loginReducer } from './login'
 
 export const rootReducer = combineReducers({
     page: pageReducer,
     user: userReducer,
-    tabs: tabReducer,
     login: loginReducer,
+    films: filmsReducer,
+    channels: channelsReducer,
 })
