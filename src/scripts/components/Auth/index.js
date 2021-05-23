@@ -26,7 +26,6 @@ const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
       e.preventDefault();
 
       setLogin(true);
-
       setUser(loginForm);
       localStorage.setItem(USER_NAME, loginForm.name);
 
@@ -76,7 +75,7 @@ const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
         onRequestClose={closeAuthModal}
         contentLabel="Авторизация"
       >
-        <form onSubmit={logIn} name="login-form">
+        <form onSubmit={logIn} name="login-form" className="grid-row-24">
           <input
             type="text"
             className="form-input"

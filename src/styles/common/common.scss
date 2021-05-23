@@ -262,6 +262,21 @@ body {
   }
 }
 
+.ReactModalPortal {
+  position: relative;
+}
+
+
+.ReactModal {
+  &__Content {
+    inset: 15% 50% !important;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
 
 .footer {
   color: white;

@@ -44,7 +44,7 @@ const Main = ({ setFilms, films }) => {
 
 const mapStateToProps = (store) => {
   return {
-    films: store.films.items,
+    films: store.films.results,
   };
 };
 
