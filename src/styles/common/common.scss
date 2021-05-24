@@ -245,7 +245,6 @@ body {
   justify-content: space-between;
 }
 
-
 .tabs {
   display: flex;
   justify-content: center;
@@ -266,7 +265,6 @@ body {
   position: relative;
 }
 
-
 .ReactModal {
   &__Content {
     inset: 15% 50% !important;
@@ -275,6 +273,36 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+}
+
+.movie {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-gap: 120px;
+  align-items: flex-start;
+  margin: 100px 0;
+}
+
+.dl-grid {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: repeat(2, max-content);
+
+  dt {
+    font-weight: bold;
+  }
+}
+
+.films-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+
+  li {
+    display: grid;
+    grid-template-rows: max-content;
+    grid-row-gap: 20px;
   }
 }
 

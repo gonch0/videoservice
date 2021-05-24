@@ -21,10 +21,12 @@ const Main = ({ setFilms, films }) => {
 
   const renderFilms = () => {
     return (
-      <ul className="grid-row-24">
+      <ul className="films-list grid-row-24">
         {films &&
           films.map((film) => (
             <li key={film.id}>
+              <img src={film.image} alt={film.title} />
+
               <Link to={`/movie/${film.id}`}>{film.title}</Link>
             </li>
           ))}
