@@ -1,4 +1,5 @@
 export const SET_FILMS = "SET_FILMS";
+export const SET_COMMENTS = "SET_COMMENTS";
 export const SET_CHANNELS = "SET_CHANNELS";
 export const SEARCH_FILMS = "SEARCH_FILMS";
 
@@ -7,6 +8,15 @@ export function setFilms(films) {
     dispatch({
       type: SET_FILMS,
       payload: films,
+    });
+  };
+}
+
+export function setComments(comments) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_COMMENTS,
+      payload: comments,
     });
   };
 }

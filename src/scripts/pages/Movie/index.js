@@ -2,13 +2,22 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import useFetch from "use-http";
 import { setFilms } from "../../actions/filmsActions";
-import { useHistory } from "react-router-dom";
+import { setComments } from "../../actions/commentsActions";
+import { Link, useHistory } from "react-router-dom";
 
-const Movie = ({ setFilms, films }) => {
+const Movie = ({ setFilms, setComments, films }) => {
   const { get, loading, error } = useFetch("/films.json", []);
+  const {
+    get: getCommentsFetch,
+    loading: loadingCommentsFetch,
+    error: errorCommentsFetch,
+  } = useFetch("/comments.json", []);
+
   const history = useHistory();
   const { pathname } = history.location;
   const [filmInfo, setFilmInfo] = useState({});
+
+  const [commentsList, setCommentsList] = useState([]);
 
   const currentMovieId = pathname.split("/").pop();
 
@@ -27,8 +36,24 @@ const Movie = ({ setFilms, films }) => {
     }
   }
 
+  async function loadComments() {
+    if (!errorCommentsFetch) {
+      const comments = await getCommentsFetch();
+      setComments(comments);
+
+      if (comments.length > 0) {
+        const relatedComments = comments.filter((item) => {
+          return JSON.stringify(item.filmId) === currentMovieId;
+        });
+
+        setCommentsList(relatedComments);
+      }
+    }
+  }
+
   useEffect(() => {
     loadFilms();
+    loadComments();
   }, []);
 
   return (
@@ -51,6 +76,26 @@ const Movie = ({ setFilms, films }) => {
           <p>{filmInfo.description}</p>
         </div>
       </div>
+
+      <div className="comments">
+        <div className="comments__create">
+          <textarea name="comment" id="comment" placeholder="Введите текст" />
+
+          <button className="btn" type="button">
+            Опубликовать
+          </button>
+        </div>
+
+        <div className="comments__list">
+          {commentsList &&
+            commentsList.map((comment) => (
+              <blockquote className="comments__item" key={comment.id}>
+                <cite>{comment.userName}</cite>
+                <p>{comment.text}</p>
+              </blockquote>
+            ))}
+        </div>
+      </div>
     </main>
   );
 };
@@ -58,12 +103,14 @@ const Movie = ({ setFilms, films }) => {
 const mapStateToProps = (store) => {
   return {
     films: store.films.items,
+    comments: store.comments.items,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setFilms: (film) => dispatch(setFilms(film)),
+    setComments: (comments) => dispatch(setComments(comments)),
   };
 };
 

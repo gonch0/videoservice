@@ -1,4 +1,9 @@
-import { SET_CHANNELS, SET_FILMS, SEARCH_FILMS } from "../actions/filmsActions";
+import {
+  SET_CHANNELS,
+  SET_FILMS,
+  SEARCH_FILMS,
+  SET_COMMENTS,
+} from "../actions/filmsActions";
 
 const initialState = {};
 
@@ -17,6 +22,16 @@ export function filmsReducer(state = initialState, action) {
           return title.includes(query);
         }),
       };
+
+    default:
+      return state;
+  }
+}
+
+export function commentsReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_COMMENTS:
+      return { ...state, comments: action.payload };
 
     default:
       return state;
