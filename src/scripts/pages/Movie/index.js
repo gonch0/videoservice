@@ -2,16 +2,22 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import useFetch from "use-http";
 import { setFilms } from "../../actions/filmsActions";
-import { setComments, addComment } from "../../actions/commentsActions";
+import {
+  setComments,
+  addComment,
+  removeComment,
+} from "../../actions/commentsActions";
 import { Link, useHistory } from "react-router-dom";
 
 const Movie = ({
   setFilms,
   setComments,
   addComment,
+  removeComment,
   films,
   comments,
   user,
+  isLoggedIn,
 }) => {
   const { get, loading, error } = useFetch("/films.json", []);
   const {
@@ -87,6 +93,10 @@ const Movie = ({
     setCommentsText(e.target.value);
   };
 
+  const onRemoveCommentClick = (e) => {
+    removeComment(e.target.id);
+  };
+
   return (
     <main className="main">
       <div className="movie">
@@ -109,24 +119,26 @@ const Movie = ({
       </div>
 
       <div className="comments">
-        <div className="comments__create">
-          <form
-            onSubmit={sendComment}
-            name="login-form"
-            className="grid-row-24"
-          >
-            <textarea
-              name="comment"
-              id="comment"
-              placeholder="Введите текст"
-              onChange={onCommentInputChange}
-            />
+        {isLoggedIn && (
+          <div className="comments__create">
+            <form
+              onSubmit={sendComment}
+              name="login-form"
+              className="grid-row-24"
+            >
+              <textarea
+                name="comment"
+                id="comment"
+                placeholder="Введите текст"
+                onChange={onCommentInputChange}
+              />
 
-            <button className="btn" type="submit">
-              Опубликовать
-            </button>
-          </form>
-        </div>
+              <button className="btn" type="submit">
+                Опубликовать
+              </button>
+            </form>
+          </div>
+        )}
 
         <div className="comments__list">
           {commentsList !== undefined &&
@@ -134,6 +146,17 @@ const Movie = ({
               <blockquote className="comments__item" key={comment.id}>
                 <cite>{comment.userName}</cite>
                 <p>{comment.text}</p>
+
+                {isLoggedIn && comment.userId === user.id && (
+                  <button
+                    type="button"
+                    className="btn comments__remove"
+                    id={comment.id}
+                    onClick={onRemoveCommentClick}
+                  >
+                    Удалить
+                  </button>
+                )}
               </blockquote>
             ))}
         </div>
@@ -156,6 +179,7 @@ const mapDispatchToProps = (dispatch) => {
     setFilms: (film) => dispatch(setFilms(film)),
     setComments: (comments) => dispatch(setComments(comments)),
     addComment: (comment) => dispatch(addComment(comment)),
+    removeComment: (id) => dispatch(removeComment(id)),
   };
 };
 

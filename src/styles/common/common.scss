@@ -342,10 +342,17 @@ body {
   &__item {
     padding: 10px;
     border: 1px solid;
+    position: relative;
 
     cite {
       font-weight: bold;
     }
+  }
+
+  &__remove {
+    position: absolute;
+    top: 0;
+    right: -175px;
   }
 }
 
