@@ -1,4 +1,4 @@
-import { SET_LOGIN } from '../actions/loginActions'
+import { SET_LOGIN } from "../actions/loginActions";
 
 const initialState = {
   isLoggedIn: false,

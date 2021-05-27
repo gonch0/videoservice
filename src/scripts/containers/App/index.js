@@ -7,7 +7,6 @@ import Main from "../../pages/Main";
 import Movie from "../../pages/Movie";
 import Channels from "../../pages/Channels";
 
-import { getPhotos } from "../../actions/pageActions";
 import { setLogin } from "../../actions/loginActions";
 import { setUser } from "../../actions/userActions";
 
@@ -60,7 +59,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setLogin: (isLoggedIn) => dispatch(setLogin(isLoggedIn)),
     setUser: (userName) => dispatch(setUser(userName)),
-    getPhotosAction: (year) => dispatch(getPhotos(year)),
   };
 };
 
