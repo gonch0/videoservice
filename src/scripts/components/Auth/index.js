@@ -12,6 +12,8 @@ import { USER_NAME } from "../../containers/App";
 const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
   const [isAuthOpen, toggleAuth] = useState(false);
   const [loginForm, setLoginForm] = useState({});
+  const [isUserNameEditOpen, setUserNameEditOpen] = useState(false);
+  const [userNameInput, setUserNameInput] = useState({});
 
   const openAuthModal = () => {
     toggleAuth(true);
@@ -24,7 +26,6 @@ const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
   const logIn = useCallback(
     (e) => {
       e.preventDefault();
-
       setLogin(true);
       setUser(loginForm);
       localStorage.setItem(USER_NAME, loginForm.name);
@@ -46,19 +47,37 @@ const Auth = ({ isLoggedIn, setLogin, setUser, user }) => {
     setLoginForm({ ...loginForm, [field]: e.target.value });
   });
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     setLoggedIn(true);
-  //     setNewLogin(user.login);
-  //   }
-  // }, [isLoggedIn]);
+  const handleUserNameClick = () => {
+    setUserNameEditOpen(true);
+  };
+  const handleUserNameBlur = () => {
+    setUserNameEditOpen(false);
+    setUser({ pass: user.pass, name: userNameInput });
+  };
+
+  const handleUserNameChange = (e) => {
+    setUserNameInput(e.target.value);
+  };
 
   return (
     <>
       {isLoggedIn ? (
         <>
           <div className="flex aic">
-            <p className="mr-15">{user.name}</p>
+            {isUserNameEditOpen ? (
+              <input
+                type="text"
+                className="input"
+                autoFocus
+                defaultValue={user.name}
+                onBlur={handleUserNameBlur}
+                onChange={handleUserNameChange}
+              />
+            ) : (
+              <p className="mr-15" onClick={handleUserNameClick}>
+                {user.name}
+              </p>
+            )}
             <button className="btn" onClick={logOut} type="button">
               Выйти
             </button>
