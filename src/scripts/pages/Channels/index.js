@@ -1,22 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import Tabs from "components/Tabs";
-import useFetch from "use-http";
-import { setChannels } from "../../actions/filmsActions";
 
-const Channels = ({ setChannels, channels }) => {
-  const { get, loading, error } = useFetch("/channels.json", []);
-  async function loadChannels() {
-    if (!error) {
-      const data = await get();
-
-      setChannels(data);
-    }
-  }
-
-  useEffect(() => {
-    loadChannels();
-  }, []);
+const Channels = ({ channels }) => {
   return (
     <main className="main">
       <Tabs />
@@ -35,10 +21,4 @@ const mapStateToProps = (store) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setChannels: (channel) => dispatch(setChannels(channel)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Channels);
+export default connect(mapStateToProps)(Channels);

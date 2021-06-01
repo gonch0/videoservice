@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import useFetch from "use-http";
+
 import { setFilms } from "../../actions/filmsActions";
-import {
-  setComments,
-  addComment,
-  removeComment,
-} from "../../actions/commentsActions";
-import { Link, useHistory } from "react-router-dom";
+import { addComment, removeComment } from "../../actions/commentsActions";
+import { useHistory } from "react-router-dom";
 
 const Movie = ({
   setFilms,
-  setComments,
   addComment,
   removeComment,
   films,
@@ -19,13 +14,6 @@ const Movie = ({
   user,
   isLoggedIn,
 }) => {
-  const { get, loading, error } = useFetch("/films.json", []);
-  const {
-    get: getCommentsFetch,
-    loading: loadingCommentsFetch,
-    error: errorCommentsFetch,
-  } = useFetch("/comments.json", []);
-
   const history = useHistory();
   const { pathname } = history.location;
 
@@ -36,31 +24,14 @@ const Movie = ({
 
   const currentMovieId = pathname.split("/").pop();
 
-  async function loadFilms() {
-    if (!error) {
-      const films = await get();
-      setFilms(films);
-
-      if (films.length > 0) {
-        const info = films.filter(
-          (item) => JSON.stringify(item.id) === currentMovieId
-        );
-
-        setFilmInfo(...info);
-      }
-    }
-  }
-
-  async function loadComments() {
-    if (!errorCommentsFetch) {
-      const comments = await getCommentsFetch();
-      setComments(comments);
-    }
-  }
-
   useEffect(() => {
-    loadFilms();
-    loadComments();
+    if (films !== undefined && films.length > 0) {
+      const info = films.filter(
+        (item) => JSON.stringify(item.id) === currentMovieId
+      );
+
+      setFilmInfo(...info);
+    }
   }, []);
 
   useEffect(() => {
@@ -177,7 +148,6 @@ const mapStateToProps = (store) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setFilms: (film) => dispatch(setFilms(film)),
-    setComments: (comments) => dispatch(setComments(comments)),
     addComment: (comment) => dispatch(addComment(comment)),
     removeComment: (id) => dispatch(removeComment(id)),
   };
