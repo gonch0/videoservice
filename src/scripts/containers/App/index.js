@@ -15,7 +15,11 @@ import useFetch from "use-http";
 import { setChannels, setFilms } from "../../actions/filmsActions";
 import { setComments } from "../../actions/commentsActions";
 
+import { useStorage } from "../../customHooks/useStorage";
+
 export const USER_NAME = "USER_NAME";
+
+const { setDataToStorage, getDataFromStorage } = useStorage();
 
 const App = ({ setLogin, setUser, setFilms, setChannels, setComments }) => {
   const {
@@ -36,11 +40,17 @@ const App = ({ setLogin, setUser, setFilms, setChannels, setComments }) => {
     error: errorComments,
   } = useFetch("/comments.json", []);
 
-  async function loadData(getData, setData, error) {
-    if (!error) {
+  async function loadData(getData, setData, error, localStorageKey) {
+    const dataFromStorage = getDataFromStorage(localStorageKey);
+
+    if (!error && dataFromStorage === null) {
       const data = await getData();
       setData(data);
+      setDataToStorage(localStorageKey, data);
+      return;
     }
+
+    setData(dataFromStorage);
   }
 
   useEffect(() => {
@@ -51,9 +61,9 @@ const App = ({ setLogin, setUser, setFilms, setChannels, setComments }) => {
       setUser({ name: userName });
     }
 
-    loadData(getFilms, setFilms, errorFilms);
-    loadData(getChannels, setChannels, errorChannels);
-    loadData(getComments, setComments, errorComments);
+    loadData(getFilms, setFilms, errorFilms, "films");
+    loadData(getChannels, setChannels, errorChannels, "channels");
+    loadData(getComments, setComments, errorComments, "comments");
   }, []);
 
   return (
